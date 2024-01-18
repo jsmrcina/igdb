@@ -1,6 +1,6 @@
 import inquirer
 
-from datetime import datetime
+from datetime import datetime, timezone
 from twitch_token import twitch_token
 from igdb_api import igdb_api
 from PIL import Image
@@ -58,10 +58,14 @@ def main():
 
     # Release Date
     release_date = [
-        datetime.utcfromtimestamp(
-            selectedGame["first_release_date"]).strftime('%b %d, %Y')
+        datetime.fromtimestamp(
+            selectedGame["first_release_date"], timezone.utc).strftime('%b %d, %Y')
     ]
     printSection("Release Date", release_date)
+
+    # Image
+    i = Image.open(BytesIO(api.queryCoverByGameId(selectedGame["id"])))
+    i.save(gameName + ".png", bitmap_format = "png")
 
     # Genres
     genres = []
@@ -106,11 +110,6 @@ def main():
     for publisher in publisherResponse.json():
         publishers.append(publisher["name"])
     printSection("Publishers", publishers)
-
-    # Image
-    i = Image.open(BytesIO(api.queryCoverByGameId(selectedGame["id"])))
-    i.save("cover.png", bitmap_format = "png")
-    i.show()
 
 
 # Main
