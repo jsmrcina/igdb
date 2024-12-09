@@ -5,6 +5,7 @@ from twitch_token import twitch_token
 from igdb_api import igdb_api
 from PIL import Image
 from io import BytesIO
+from pathvalidate import sanitize_filename
 
 
 # Utility
@@ -73,8 +74,9 @@ def main():
     printSection("Release Date", release_date)
 
     # Image
+    sanitizedName = sanitize_filename(gameName)
     i = Image.open(BytesIO(api.queryCoverByGameId(selectedGame["id"])))
-    i.save(gameName + ".png", bitmap_format = "png")
+    i.save(sanitizedName + ".png", bitmap_format = "png")
 
     # Genres
     genres = []
