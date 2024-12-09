@@ -107,6 +107,7 @@ def main():
                 multiplayer_modes.append("Multiplayer")
 
             printSection("Online", multiplayer_modes)
+            break
 
     # Developers
     developers = []
