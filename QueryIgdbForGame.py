@@ -44,14 +44,23 @@ def main():
     api = igdb_api()
 
     gameName = input("Type game name: ")
-    gameResults = api.queryGameByCaseInsensitiveSubstringOfName(
+    gameResults = api.queryGameByCaseInsensitiveName(
         gameName).json()
 
-    # If more than 1 game matches, let the user choose
     if len(gameResults) == 1:
         selectedGame = gameResults[0]
     else:
-        selectedGame = chooseGameDict(gameResults)[0]
+        gameResults = api.queryGameByCaseInsensitiveSubstringOfName(
+            gameName).json()
+
+        # If more than 1 game matches, let the user choose
+        if len(gameResults) == 0:
+            print("Failed to find game by name.")
+            exit(1)
+        if len(gameResults) == 1:
+            selectedGame = gameResults[0]
+        else:
+            selectedGame = chooseGameDict(gameResults)[0]
 
     # Title
     printSection("Title", [selectedGame["name"]])

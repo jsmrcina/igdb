@@ -52,6 +52,10 @@ class igdb_api:
         data = f'fields *; where name = "{name}";'
         return self.queryIgdb(data, "games")
 
+    def queryGameByCaseInsensitiveName(self, name):
+        data = f'fields *; where name ~ "{name}";'
+        return self.queryIgdb(data, "games")
+
     def queryGameByCaseInsensitiveSubstringOfName(self, name):
         data = f'fields *; where name ~ *"{name}"*;'
         return self.queryIgdb(data, "games")
